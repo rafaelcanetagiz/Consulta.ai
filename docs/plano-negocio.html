@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Consulta Aí — plano até 31/12/2026</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#eef3f0;--surface:#fbfdfc;--ink:#13221b;--muted:#506258;--line:#cfdad3;--accent:#0f6b5c;--accent-soft:#d5ece6;
+--you:#a8480a;--you-soft:#fbe6d3;--imac:#3b4a82;--imac-soft:#e1e5f6;--warn:#a31d1d;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1a15;--surface:#16251e;--ink:#e6efe9;--muted:#9bb0a4;--line:#2b3f35;--accent:#4fc0ab;--accent-soft:#16372f;--you:#f0a56a;--you-soft:#3a2615;--imac:#a3b1ee;--imac-soft:#1f2745;--warn:#f08a8a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1a15;--surface:#16251e;--ink:#e6efe9;--muted:#9bb0a4;--line:#2b3f35;--accent:#4fc0ab;--accent-soft:#16372f;--you:#f0a56a;--you-soft:#3a2615;--imac:#a3b1ee;--imac-soft:#1f2745;--warn:#f08a8a;color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:1040px;margin:0 auto;padding:20px 16px 56px}
+h1,h2{font-family:Charter,"Iowan Old Style",Georgia,serif;font-weight:700;letter-spacing:-.01em;margin:0}
+h1{font-size:clamp(26px,5vw,38px);line-height:1.15}
+h2{font-size:24px;margin:44px 0 12px}
+.sub{color:var(--muted);margin:6px 0 0;max-width:62ch}
+.sim{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
+@media(max-width:760px){.sim{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px}
+.ctl{margin:0 0 14px}
+.ctl label{display:flex;justify-content:space-between;gap:8px;font-size:14px}
+.ctl output{font-weight:700;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--accent);margin:6px 0 0}
+.hint{font-size:12.5px;color:var(--muted)}
+.big{font-family:Charter,Georgia,serif;font-size:clamp(34px,7vw,52px);line-height:1;font-weight:700;font-variant-numeric:tabular-nums}
+.meter{position:relative;height:14px;background:var(--accent-soft);border-radius:7px;margin:12px 0 4px;overflow:hidden}
+.meter i{position:absolute;inset:0 auto 0 0;background:var(--accent);border-radius:7px}
+.meter b{position:absolute;top:0;bottom:0;width:2px;background:var(--ink)}
+.row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--line);font-size:14.5px}
+.row span:last-child{font-weight:650;font-variant-numeric:tabular-nums;text-align:right}
+.warn{color:var(--warn);font-size:13.5px;margin:8px 0 0}
+.pos{color:var(--accent)}.neg{color:var(--warn)}
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th,td{text-align:left;padding:9px 10px;border-top:1px solid var(--line);vertical-align:top}
+th{font-weight:650;font-size:13.5px;color:var(--muted)}
+.scroll{overflow-x:auto}
+.tag{display:inline-block;font-size:12.5px;font-weight:700;padding:1px 8px;border-radius:99px;white-space:nowrap}
+.t-voce{background:var(--you-soft);color:var(--you)}
+.t-eu{background:var(--accent-soft);color:var(--accent)}
+.t-imac{background:var(--imac-soft);color:var(--imac)}
+.wk{border-left:3px solid var(--line);padding:2px 0 2px 14px;margin:0 0 18px}
+.wk h3{margin:0 0 6px;font-size:15px}
+.wk ul{list-style:none;margin:0;padding:0}
+.wk li{display:flex;gap:10px;align-items:baseline;margin:5px 0}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:13.5px;color:var(--muted)}
+ol.steps{margin:0;padding:0;list-style:none;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:34px 1fr auto;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+ol.steps li::before{content:counter(s);font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
+ol.steps small{color:var(--muted);display:block}
+.dur{font-size:13px;color:var(--muted);white-space:nowrap}
+.note{border-left:4px solid var(--you);background:var(--you-soft);padding:12px 14px;border-radius:6px;margin:14px 0;font-size:14.5px}
+.foot{margin-top:36px;font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+<h1>Consulta Aí: do ofício ao empenho até 31/12</h1>
+<p class="sub">Hoje é 30/10, restam 62 dias. As hipóteses abaixo são minhas, não dados do IMAC. Mexa nos controles e veja o efeito na meta de R$ 10 mil.</p>
+
+<section class="sim" aria-label="Simulador">
+  <div class="panel">
+    <div class="ctl"><label for="preco">Licença anual cobrada do IMAC <output id="o-preco"></output></label>
+      <input id="preco" type="range" min="20000" max="70000" step="1000" value="48000">
+      <div class="hint">Teto de dispensa por valor (federal 2026): R$ 65.492,11. Confirmar o limite no Acre.</div></div>
+    <div class="ctl"><label for="pEmp">Chance de empenho em 2026 <output id="o-pEmp"></output></label>
+      <input id="pEmp" type="range" min="0" max="100" step="5" value="35">
+      <div class="hint">Depende de dotação, rito e procuradoria. Pergunte ao José Denis.</div></div>
+    <div class="ctl"><label for="pPago">Chance de pagamento em 2026, se empenhado <output id="o-pPago"></output></label>
+      <input id="pPago" type="range" min="0" max="100" step="5" value="40"></div>
+    <div class="ctl"><label for="assin">RTs e consultorias pagantes <output id="o-assin"></output></label>
+      <input id="assin" type="range" min="0" max="60" step="1" value="15"></div>
+    <div class="ctl"><label for="mensal">Mensalidade por assinante <output id="o-mensal"></output></label>
+      <input id="mensal" type="range" min="19" max="149" step="5" value="49"></div>
+    <div class="ctl"><label for="meses">Meses cobrados em 2026 <output id="o-meses"></output></label>
+      <input id="meses" type="range" min="0" max="2" step="1" value="1"></div>
+    <div class="ctl" style="margin:0"><label for="custo">Custo mensal (infra, IA, WhatsApp, contador) <output id="o-custo"></output></label>
+      <input id="custo" type="range" min="0" max="3000" step="100" value="900"></div>
+  </div>
+
+  <div class="panel">
+    <div class="hint">Se o contrato for empenhado em 2026, você fatura</div>
+    <div class="big" id="a-fat"></div>
+    <div class="meter"><i id="m-bar"></i><b id="m-goal"></b></div>
+    <div class="hint" id="a-goal"></div>
+    <div id="a-warn"></div>
+    <div class="row"><span>Se não fechar, só a receita de assinantes</span><span id="b-fat"></span></div>
+    <div class="row"><span>Faturamento esperado (ponderado)</span><span id="e-fat"></span></div>
+    <div class="row"><span>Caixa esperado em 2026</span><span id="e-cx"></span></div>
+    <div class="row"><span>Caixa esperado menos custos</span><span id="e-liq"></span></div>
+    <div class="row"><span>Chance mínima de empenho para esperar R$ 10 mil</span><span id="need"></span></div>
+    <h3 style="margin:16px 0 4px;font-size:15px">Efeito de +10% em cada variável no caixa esperado</h3>
+    <div id="sens"></div>
+  </div>
+</section>
+
+<h2>Passo a passo e quem faz</h2>
+<div class="legend"><span><span class="tag t-voce">Você</span> só você consegue</span><span><span class="tag t-eu">Eu</span> eu produzo</span><span><span class="tag t-imac">IMAC</span> depende do órgão</span></div>
+<div id="tl" style="margin-top:16px"></div>
+
+<h2>Plano técnico: o que eu construo</h2>
+<ol class="steps" id="steps"></ol>
+
+<h2>Acessos que preciso de você</h2>
+<div class="note"><b>Neste chat eu não controlo navegador nem rodo código com acesso à rede.</b> Eu escrevo o código, os textos e os documentos. Para eu operar contas e executar o projeto direto, o caminho é o Claude Code (código) e o Claude in Chrome (navegador). Nunca cole senhas ou chaves aqui: use convites com permissão mínima.</div>
+<div class="scroll"><table>
+<thead><tr><th>Acesso</th><th>Para quê</th><th>Quando</th></tr></thead>
+<tbody id="acc"></tbody></table></div>
+
+<p class="foot">Valores de dispensa: Decreto 12.807/2025 (federal). Pontos a confirmar: limite no Acre, rito da dispensa eletrônica e dotação do IMAC em 2026.</p>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+const brl=v=>v.toLocaleString("pt-BR",{style:"currency",currency:"BRL",maximumFractionDigits:0});
+const pct=v=>Math.round(v)+"%";
+const TETO=65492.11, META=10000;
+const ids=["preco","pEmp","pPago","assin","mensal","meses","custo"];
+function calc(p){
+  const b2c=p.assin*p.mensal*p.meses;
+  const fat=p.preco*p.pEmp/100+b2c;
+  const cx=p.preco*p.pEmp/100*p.pPago/100+b2c;
+  return {b2c,fat,cx,liq:cx-p.custo*2,ifClose:p.preco+b2c};
+}
+function read(){const p={};ids.forEach(i=>p[i]=+$(i).value);return p}
+function render(){
+  const p=read(), r=calc(p);
+  $("o-preco").textContent=brl(p.preco);$("o-pEmp").textContent=pct(p.pEmp);$("o-pPago").textContent=pct(p.pPago);
+  $("o-assin").textContent=p.assin;$("o-mensal").textContent=brl(p.mensal);$("o-meses").textContent=p.meses;$("o-custo").textContent=brl(p.custo);
+  $("a-fat").textContent=brl(r.ifClose);
+  const w=Math.min(100,r.ifClose/(META*2)*100);
+  $("m-bar").style.width=w+"%";$("m-goal").style.left="50%";
+  $("a-goal").innerHTML=r.ifClose>=META?"<span class=\"pos\">Acima da meta de R$ 10 mil.</span> A marca no meio da barra é a meta.":"<span class=\"neg\">Abaixo da meta de R$ 10 mil.</span> A marca no meio da barra é a meta.";
+  $("a-warn").innerHTML=p.preco>TETO?"<p class=\"warn\">Preço acima do teto federal de dispensa. Exigiria outro rito, com prazo maior.</p>":"";
+  $("b-fat").textContent=brl(r.b2c);$("e-fat").textContent=brl(r.fat);$("e-cx").textContent=brl(r.cx);
+  const l=$("e-liq");l.textContent=brl(r.liq);l.className=r.liq>=0?"pos":"neg";
+  const need=Math.max(0,(META-r.b2c)/p.preco*100);
+  $("need").textContent=need>100?"impossível só com o IMAC":pct(need);
+  const base=r.cx, rows=[];
+  const bump={preco:"Preço da licença",pEmp:"Chance de empenho",pPago:"Chance de pagamento",assin:"Número de assinantes",mensal:"Mensalidade"};
+  Object.keys(bump).forEach(k=>{
+    const q={...p};q[k]=(k==="pEmp"||k==="pPago")?Math.min(100,p[k]*1.1):p[k]*1.1;
+    rows.push([bump[k],calc(q).cx-base]);
+  });
+  rows.sort((a,b)=>b[1]-a[1]);
+  $("sens").innerHTML=rows.map(x=>"<div class=\"row\"><span>"+x[0]+"</span><span>"+(x[1]>=0?"+":"")+brl(x[1])+"</span></div>").join("");
+}
+ids.forEach(i=>$(i).addEventListener("input",render));render();
+
+const T=[
+["Semana 1 · 30/10 a 06/11",[
+["voce","Reunião com André Hassen: demo e pedido de ofício autorizando o acesso ao SEI, mais um técnico para validar os textos."],
+["voce","Perguntar ao José Denis: há dotação em 2026? Até que data empenhar? Qual rito?"],
+["voce","Conferir CNPJ ativo com CNAE de software, certidões em dia e emissor de NFS-e."],
+["eu","Mapear a Pesquisa Pública do IMAC e montar protótipo clicável com 3 a 5 processos reais."]]],
+["Semana 2 · 09/11 a 13/11",[
+["voce","Recrutar 10 a 20 RTs e produtores para o piloto."],
+["eu","Coletor de processos e os 10 tipos de documento mais comuns."],
+["imac","Técnico do órgão valida os textos “o que significa” e “o que fazer”."]]],
+["Semana 3 · 16/11 a 20/11",[
+["eu","MVP no ar (PWA e alerta por WhatsApp)."],
+["voce","Rodar o piloto e registrar depoimentos e números de uso."]]],
+["Semana 4 · 23/11 a 04/12",[
+["eu","Redigir proposta, termo de referência simples e relatório do piloto."],
+["voce","Entregar ao IMAC; a procuradoria revisa o rito."]]],
+["Semanas 5 e 6 · 07/12 a 18/12",[
+["imac","Dispensa e empenho."],
+["voce","Responder diligências e manter contato semanal com o IMAC."]]],
+["Fechamento · 21/12 a 31/12",[
+["voce","Emitir NFS-e e cobrar o pagamento."],
+["eu","Suporte e ajustes pós-lançamento."]]]
+];
+const lab={voce:"Você",eu:"Eu",imac:"IMAC"};
+$("tl").innerHTML=T.map(w=>"<div class=\"wk\"><h3>"+w[0]+"</h3><ul>"+w[1].map(i=>"<li><span class=\"tag t-"+i[0]+"\">"+lab[i[0]]+"</span><span>"+i[1]+"</span></li>").join("")+"</ul></div>").join("");
+
+const S=[
+["Mapear a Pesquisa Pública do SEI do IMAC","Campos, captcha, limites. Decide entre HTTP direto e navegador automatizado.","1 a 2 dias"],
+["Modelo de dados","Processo, andamento, documento, tipo e explicação, em Postgres.","0,5 dia"],
+["Coletor com fila e cache","Python e Playwright. Troca para o web service oficial se o IMAC liberar.","3 dias"],
+["Taxonomia de documentos","~30 tipos, cada um com “o que significa” e “o que fazer”. A orientação vem do texto validado, não do modelo.","2 dias"],
+["Classificação por IA","PDF para texto ou visão, tipo do documento e resumo. Cache por tipo para baixar custo.","2 dias"],
+["App PWA mobile-first","Busca por número, linha do tempo visual, cartão de ação, leve para internet fraca.","4 dias"],
+["Alertas e login","WhatsApp com templates, e-mail e login por código no telefone.","2 dias"],
+["LGPD e segurança","Só dados públicos, aviso de uso, logs e limite de requisições.","1 dia"],
+["Deploy e monitoramento","AWS em São Paulo, Sentry e analytics.","1 dia"],
+["Piloto e métricas","Consultas por usuário, retorno em 7 dias e queda de perguntas no balcão.","contínuo"]
+];
+$("steps").innerHTML=S.map(s=>"<li><div><b>"+s[0]+"</b><small>"+s[1]+"</small></div><span class=\"dur\">"+s[2]+"</span></li>").join("");
+
+const A=[
+["Ofício do IMAC, endereço da Pesquisa Pública e 5 a 10 números de processos públicos","Bloqueia o passo 1; sem isso trabalho com suposição","Semana 1"],
+["Conta GitHub (convite ao repositório)","Código e histórico","Semana 1"],
+["AWS (usuário com permissão restrita) ou Fly.io","Servidor e banco","Semana 2"],
+["Chave da API Anthropic com limite de gasto","Classificação e resumos","Semana 2"],
+["Domínio no Registro.br e acesso ao DNS","Endereço do app","Semana 2"],
+["Meta Business verificada, número dedicado e provedor de WhatsApp (exige CNPJ)","Alertas. A aprovação dos templates leva dias: comece já","Semana 2"],
+["Asaas e emissor de NFS-e (exigem CNPJ)","Cobrança de assinantes e nota ao IMAC","Semana 4"],
+["Sentry e analytics","Erros e métricas; eu configuro com seu e-mail","Semana 2"]
+];
+$("acc").innerHTML=A.map(a=>"<tr><td>"+a[0]+"</td><td>"+a[1]+"</td><td>"+a[2]+"</td></tr>").join("");
+</script>
+</body>
+</html>

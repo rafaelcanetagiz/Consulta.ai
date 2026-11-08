@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Consulta AI - SEI</title>
+<meta name="description" content="Entenda documentos, etapas e acompanhe seus processos SEI no IMAC de forma descomplicada.">
+<meta name="theme-color" content="#050b30">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Consulta AI - SEI">
+<meta property="og:description" content="Consulte seus processos SEI de forma rápida e fácil.">
+<meta property="og:url" content="https://rafaelcanetaegiz.github.io/consulta.ai/">
+<meta property="og:image" content="https://rafaelcanetaegiz.github.io/consulta.ai/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="data:image/png;base64,__ICON__">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&display=swap">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--navy:#050b30;--ink:#0a1448;--blue:#1d4bff;--sky:#2f7bff;--cyan:#19e3ff;--amber:#ffc83d;--text:#eaf0ff;--soft:#b9c9f5;color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--navy)}
+body{margin:0;min-height:100svh;background:var(--navy);color:var(--text);font-family:Sora,"Avenir Next","Segoe UI",system-ui,sans-serif;overflow-x:hidden}
+.hero{position:relative;min-height:100svh;display:grid;align-items:center;padding:28px 0 36px;isolation:isolate;
+background:
+ radial-gradient(700px 520px at 82% 38%,rgba(25,227,255,.30),transparent 65%),
+ radial-gradient(760px 600px at 8% 105%,rgba(29,75,255,.55),transparent 62%),
+ linear-gradient(160deg,#050b30 0%,#0a1859 55%,#0d2fa8 130%)}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;opacity:.55;
+background-image:linear-gradient(rgba(120,160,255,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(120,160,255,.13) 1px,transparent 1px);
+background-size:52px 52px;-webkit-mask-image:radial-gradient(ellipse at 70% 40%,#000 15%,transparent 75%);mask-image:radial-gradient(ellipse at 70% 40%,#000 15%,transparent 75%)}
+.flies{position:absolute;inset:0;z-index:-1;pointer-events:none}
+.flies i{position:absolute;border-radius:50%;background:var(--amber);box-shadow:0 0 10px 3px rgba(255,200,61,.75);opacity:.7;animation:drift var(--d,9s) ease-in-out var(--l,0s) infinite alternate}
+@keyframes drift{from{transform:translate(0,0);opacity:.2}to{transform:translate(var(--x,18px),var(--y,-26px));opacity:.95}}
+.wrap{width:100%;max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr;gap:44px;align-items:center}
+@media(min-width:1040px){.wrap{grid-template-columns:1.1fr .9fr;gap:40px;padding:0 28px}}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:26px}
+.brand img{width:44px;height:44px;border-radius:50%;box-shadow:0 0 0 2px rgba(25,227,255,.6),0 0 18px rgba(25,227,255,.6)}
+.brand b{font-size:20px;font-weight:800;letter-spacing:-.01em}
+.brand b span{color:var(--cyan)}
+.chip{font-size:12.5px;font-weight:600;padding:4px 11px;border-radius:99px;border:1px solid rgba(25,227,255,.55);color:var(--cyan);background:rgba(25,227,255,.08)}
+h1{margin:0;font-size:clamp(36px,5.6vw,66px);line-height:1.04;font-weight:800;letter-spacing:-.025em;color:#fff;
+background:linear-gradient(100deg,#fff 35%,#8cefff 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lead{margin:22px 0 0;font-size:clamp(16px,2vw,19px);line-height:1.6;color:var(--soft);max-width:54ch}
+.query{margin-top:30px;max-width:560px;padding:14px;border-radius:20px;background:rgba(255,255,255,.07);border:1px solid rgba(140,175,255,.35);
+backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 18px 50px rgba(0,10,80,.45),inset 0 1px 0 rgba(255,255,255,.12)}
+.field{display:flex;flex-direction:column;gap:10px}
+.field input{flex:1;min-width:0;font:inherit;font-size:16px;color:#fff;background:rgba(3,8,40,.7);border:1.5px solid rgba(140,175,255,.4);border-radius:13px;padding:15px 16px;outline:none}
+.field input::placeholder{color:#8fa3dd;font-size:14.5px}
+.field input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(25,227,255,.25)}
+.go{display:inline-flex;align-items:center;justify-content:center;gap:10px;font:inherit;font-weight:700;font-size:15.5px;color:#031a0d;border:0;border-radius:13px;padding:15px 20px;cursor:pointer;
+background:linear-gradient(135deg,#43f08a,#17c964);box-shadow:0 8px 26px rgba(40,230,120,.4);transition:transform .15s,box-shadow .15s}
+.go:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(40,230,120,.55)}
+.go:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.go svg{width:22px;height:22px;fill:currentColor;flex:none}
+.notice{display:flex;gap:10px;align-items:flex-start;margin:12px 4px 0;font-size:13.5px;line-height:1.5;color:#ffe9b0}
+.notice b{flex:none;font-size:12px;padding:2px 9px;border-radius:99px;background:var(--amber);color:#2a1c00;margin-top:1px}
+.notice.hit{animation:flash .9s ease-out}
+@keyframes flash{0%{background:rgba(255,200,61,.35)}100%{background:transparent}}
+.fine{margin:22px 0 0;font-size:12.5px;color:#8fa3dd;max-width:60ch}
+/* telefone */
+.stage{position:relative;width:min(320px,calc(100% - 24px));margin:0 auto;justify-self:center}
+@media(min-width:1040px){.stage{justify-self:end;margin:0 20px 0 0}}
+.phone{position:relative;aspect-ratio:320/640;border-radius:44px;padding:10px;background:linear-gradient(160deg,#3a5cff,#0b1450 55%,#19e3ff);
+box-shadow:0 0 0 1px rgba(255,255,255,.18),0 30px 80px rgba(0,8,70,.7),0 0 90px rgba(25,227,255,.35)}
+.screen{height:100%;border-radius:35px;overflow:hidden;background:#0b141a;display:flex;flex-direction:column;position:relative}
+.screen::before{content:"";position:absolute;top:8px;left:50%;width:84px;height:22px;margin-left:-42px;border-radius:14px;background:#000;z-index:3}
+.wh{display:flex;align-items:center;gap:9px;padding:38px 12px 10px;background:#202c33;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wh img{width:34px;height:34px;border-radius:50%}
+.wh strong{display:block;font-size:14.5px;color:#e9edef;font-weight:600;line-height:1.2}
+.wh small{font-size:11.5px;color:#8696a0}
+.chat{flex:1;padding:12px 10px;display:flex;flex-direction:column;gap:7px;font:13px/1.42 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+background:radial-gradient(circle at 20% 10%,rgba(25,227,255,.06),transparent 50%),#0b141a;overflow:hidden}
+.b{max-width:88%;padding:7px 9px 6px;border-radius:9px;color:#e9edef;white-space:pre-line}
+.in{align-self:flex-start;background:#202c33;border-top-left-radius:2px}
+.out{align-self:flex-end;background:#005c4b;border-top-right-radius:2px}
+.t{display:block;text-align:right;font-size:10.5px;color:#8fa0a8;margin-top:2px}
+.t i{font-style:normal;color:#53bdeb}
+.doc{display:flex;gap:9px;align-items:center;background:#17222a;border-radius:7px;padding:8px;margin-bottom:4px}
+.doc span{flex:none;width:34px;height:40px;border-radius:5px;background:#e5484d;color:#fff;font-size:10px;font-weight:700;display:grid;place-items:center}
+.doc em{font-style:normal;font-size:12.5px;line-height:1.3;display:block}
+.doc small{display:block;color:#8fa0a8;font-size:11px}
+.b h4{margin:0 0 2px;font-size:13px;color:#fff}
+.bar{display:flex;gap:8px;align-items:center;padding:8px 10px 14px;background:#0b141a;font-family:system-ui,sans-serif}
+.bar div{flex:1;height:34px;border-radius:17px;background:#202c33;color:#8696a0;font-size:13px;display:flex;align-items:center;padding-left:14px}
+.bar span{width:34px;height:34px;border-radius:50%;background:#00a884;flex:none}
+.orb{position:absolute;left:-186px;bottom:70px;width:200px;height:200px;border-radius:50%;overflow:hidden;z-index:4;
+background:radial-gradient(circle at 50% 45%,#fff 40%,#c6e2ff 100%);
+box-shadow:0 0 0 5px rgba(25,227,255,.55),0 0 55px rgba(25,227,255,.7),0 0 120px rgba(47,123,255,.55);animation:bob 5.5s ease-in-out infinite}
+.orb img{display:block;width:100%;height:100%;mix-blend-mode:multiply}
+@keyframes bob{50%{transform:translateY(-10px)}}
+.hi{position:absolute;left:-206px;bottom:292px;z-index:5;font-size:13px;font-weight:600;color:#06104a;background:#fff;padding:9px 13px;border-radius:14px 14px 14px 3px;box-shadow:0 8px 24px rgba(0,10,80,.45);max-width:190px;line-height:1.35}
+@media(max-width:1039px){
+ .orb{left:auto;right:-6px;bottom:-34px;width:118px;height:118px}
+ .hi{left:auto;right:100px;bottom:-4px;max-width:150px;font-size:12px}
+ .hero{padding-bottom:70px}
+ .phone{aspect-ratio:320/710}
+}
+@media(prefers-reduced-motion:reduce){.orb,.flies i,.notice.hit{animation:none}.go{transition:none}}
+</style>
+</head>
+<body>
+<main class="hero">
+<div class="flies" id="flies" aria-hidden="true"></div>
+<div class="wrap">
+  <section>
+    <div class="brand"><img src="data:image/png;base64,__ICON__" alt=""><b>Consulta <span>AI</span></b><span class="chip">SEI · IMAC</span></div>
+    <h1>Consulte seus processos SEI de forma rápida e fácil</h1>
+    <p class="lead">Consulta AI foi desenvolvido pra ajudar você produtor rural, responsável técnico a entender documentos, etapas e acompanhar seus processos administrativos SEI no IMAC de forma descomplicada!</p>
+
+    <div class="query">
+      <div class="field">
+        <input id="proc" type="text" inputmode="numeric" autocomplete="off" aria-label="Número do processo SEI" placeholder="Digite aqui o número do seu processo">
+        <button class="go" id="go" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.43 15.1L2 22l5.04-1.58A9.9 9.9 0 1 0 12.04 2zm5.8 14.1c-.25.7-1.45 1.34-2 1.4-.52.05-1.17.07-1.9-.12a15 15 0 0 1-1.7-.63c-3-1.3-4.9-4.3-5.05-4.5-.14-.2-1.2-1.6-1.2-3s.75-2.1 1-2.4c.27-.3.58-.37.78-.37h.55c.18 0 .42-.07.65.5.25.6.85 2.1.93 2.25.07.15.12.33.02.52-.1.2-.15.33-.3.5l-.45.52c-.15.15-.3.3-.13.6.17.3.77 1.27 1.65 2.05 1.13 1 2.1 1.32 2.4 1.47.3.15.47.12.65-.07.17-.2.75-.87.95-1.17.2-.3.4-.25.67-.15.28.1 1.75.83 2.05.98.3.15.5.22.57.35.07.12.07.7-.18 1.4z"/></svg>
+          Iniciar conversa no WhatsApp
+        </button>
+      </div>
+      <p class="notice" id="notice" role="status"><b>Em breve</b><span>Esta parte ainda não está funcionando. Estamos conectando o Consulta AI ao SEI do IMAC.</span></p>
+    </div>
+    <p class="fine">Projeto independente, não é um canal oficial do IMAC. A conversa ao lado é um exemplo ilustrativo.</p>
+  </section>
+
+  <section class="stage" aria-label="Exemplo de conversa no WhatsApp">
+    <div class="hi">Oi! Eu leio o SEI e explico pra você.</div>
+    <div class="orb"><img src="data:image/jpeg;base64,__MASCOT__" alt="Mascote do Consulta AI: um vaga-lume azul segurando uma lupa"></div>
+    <div class="phone"><div class="screen">
+      <div class="wh"><img src="data:image/png;base64,__ICON__" alt=""><div><strong>Consulta AI</strong><small>online</small></div></div>
+      <div class="chat">
+        <div class="b out">Quero entender meu processo 0001.000123.00045/2026-17<span class="t">09:41 <i>✓✓</i></span></div>
+        <div class="b in">Achei seu processo! 🔎 Ele está na etapa <b>Certidão emitida</b>. Esse é o documento mais recente:<span class="t">09:41</span></div>
+        <div class="b in"><div class="doc"><span>PDF</span><em>Certidão de Dispensa de Licenciamento Ambiental<small>1 página</small></em></div><span class="t">09:41</span></div>
+        <div class="b in"><h4>📖 O que significa</h4>O IMAC reconheceu que a sua atividade não precisa de licença ambiental.
+<h4 style="margin-top:6px">✅ O que fazer agora</h4>• Baixe e guarde a certidão
+• Confira a validade no documento
+• Mudou a atividade? Fale com o IMAC antes<span class="t">09:42</span></div>
+      </div>
+      <div class="bar"><div>Mensagem</div><span></span></div>
+    </div></div>
+  </section>
+</div>
+</main>
+<script>
+(function(){
+  var f=document.getElementById("flies");
+  for(var i=0;i<18;i++){
+    var s=document.createElement("i"),z=3+Math.random()*4;
+    s.style.cssText="left:"+(Math.random()*100)+"%;top:"+(Math.random()*100)+"%;width:"+z+"px;height:"+z+"px;--d:"+(6+Math.random()*7)+"s;--l:-"+(Math.random()*8)+"s;--x:"+(Math.random()*50-25)+"px;--y:"+(-10-Math.random()*40)+"px";
+    f.appendChild(s);
+  }
+  var inp=document.getElementById("proc"),n=document.getElementById("notice");
+  inp.addEventListener("input",function(){inp.value=inp.value.replace(/[^0-9.\/\-]/g,"")});
+  function hit(){
+    n.querySelector("span").textContent="Ainda não está funcionando. Estamos conectando o Consulta AI ao SEI do IMAC: volte em breve!";
+    n.classList.remove("hit");void n.offsetWidth;n.classList.add("hit");
+  }
+  document.getElementById("go").addEventListener("click",hit);
+  inp.addEventListener("keydown",function(e){if(e.key==="Enter")hit()});
+})();
+</script>
+</body>
+</html>
