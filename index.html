@@ -99,6 +99,12 @@ box-shadow:0 0 0 5px rgba(25,227,255,.55),0 0 55px rgba(25,227,255,.7),0 0 120px
  .hero{padding-bottom:70px}
  .phone{aspect-ratio:320/710}
 }
+.help{margin:12px 0 2px;padding:12px 14px;border-radius:14px;background:rgba(25,227,255,.1);border:1px solid rgba(25,227,255,.4);font-size:13.5px;line-height:1.5}
+.help[hidden]{display:none}
+.help p{margin:0 0 6px}.help ol{margin:0;padding-left:20px}
+.help code{font:600 13.5px ui-monospace,Menlo,Consolas,monospace;background:rgba(3,8,40,.7);padding:2px 7px;border-radius:6px;word-break:break-all}
+.help button{font:inherit;font-size:12.5px;color:var(--cyan);background:transparent;border:1px solid rgba(25,227,255,.55);border-radius:99px;padding:2px 10px;cursor:pointer}
+.help a{color:var(--cyan)}
 @media(prefers-reduced-motion:reduce){.orb,.flies i,.notice.hit{animation:none}.go{transition:none}}
 </style>
 </head>
@@ -119,7 +125,12 @@ box-shadow:0 0 0 5px rgba(25,227,255,.55),0 0 55px rgba(25,227,255,.7),0 0 120px
           Iniciar conversa no WhatsApp
         </button>
       </div>
-      <p class="notice" id="notice" role="status"><b>Em breve</b><span>Esta parte ainda não está funcionando. Estamos conectando o Consulta AI ao SEI do IMAC.</span></p>
+      <p class="notice" id="notice" role="status"><b>Em breve</b><span>Consulta automática com explicação dos documentos. Por enquanto, abrimos a pesquisa oficial do SEI para você.</span></p>
+      <div class="help" id="help" hidden role="region" aria-label="Como continuar na pesquisa do SEI">
+        <p><b id="copied"></b> Seu número: <code id="num"></code> <button type="button" id="again">Copiar de novo</button></p>
+        <ol><li>Na janela do SEI, clique no campo <b>Nº SEI</b> e cole (Ctrl+V).</li><li>Resolva o captcha.</li><li>Clique em <b>Pesquisar</b>.</li></ol>
+        <p id="blocked" hidden>O navegador bloqueou a janela. <a href="https://app.sei.ac.gov.br/sei/modulos/pesquisa/md_pesq_processo_pesquisar.php?acao_externa=protocolo_pesquisar&amp;acao_origem_externa=protocolo_pesquisar&amp;id_orgao_acesso_externo=0" target="_blank" rel="noopener">Abrir a pesquisa do SEI</a>.</p>
+      </div>
     </div>
     <p class="fine">Projeto independente, não é um canal oficial do IMAC. A conversa ao lado é um exemplo ilustrativo.</p>
   </section>
@@ -153,12 +164,31 @@ box-shadow:0 0 0 5px rgba(25,227,255,.55),0 0 55px rgba(25,227,255,.7),0 0 120px
   }
   var inp=document.getElementById("proc"),n=document.getElementById("notice");
   inp.addEventListener("input",function(){inp.value=inp.value.replace(/[^0-9.\/\-]/g,"")});
-  function hit(){
-    n.querySelector("span").textContent="Ainda não está funcionando. Estamos conectando o Consulta AI ao SEI do IMAC: volte em breve!";
-    n.classList.remove("hit");void n.offsetWidth;n.classList.add("hit");
+  var SEI="https://app.sei.ac.gov.br/sei/modulos/pesquisa/md_pesq_processo_pesquisar.php?acao_externa=protocolo_pesquisar&acao_origem_externa=protocolo_pesquisar&id_orgao_acesso_externo=0";
+  var help=document.getElementById("help"),msg=n.querySelector("span"),copied=document.getElementById("copied");
+  function copy(t){
+    if(navigator.clipboard&&window.isSecureContext){return navigator.clipboard.writeText(t).then(function(){return true},function(){return false})}
+    var ta=document.createElement("textarea");ta.value=t;ta.style.cssText="position:fixed;opacity:0";document.body.appendChild(ta);ta.select();
+    var ok=false;try{ok=document.execCommand("copy")}catch(e){}document.body.removeChild(ta);return Promise.resolve(ok);
   }
-  document.getElementById("go").addEventListener("click",hit);
-  inp.addEventListener("keydown",function(e){if(e.key==="Enter")hit()});
+  function say(p){p.then(function(ok){copied.textContent=ok?"Número copiado.":"Não consegui copiar sozinho: use o botão Copiar."})}
+  function start(){
+    var v=inp.value.trim();
+    if(v.replace(/\D/g,"").length<6){
+      msg.textContent="Digite o número do processo para continuar.";
+      n.classList.remove("hit");void n.offsetWidth;n.classList.add("hit");inp.focus();return;
+    }
+    var c=copy(v);
+    var w=Math.min(1000,screen.availWidth-40),h=Math.min(780,screen.availHeight-60);
+    var pop=window.open(SEI,"seipesquisa","popup=yes,width="+w+",height="+h+",left=20,top=20");
+    document.getElementById("num").textContent=v;
+    document.getElementById("blocked").hidden=!!pop;
+    help.hidden=false;say(c);
+    if(pop){try{pop.focus()}catch(e){}}
+  }
+  document.getElementById("go").addEventListener("click",start);
+  document.getElementById("again").addEventListener("click",function(){say(copy(inp.value.trim()))});
+  inp.addEventListener("keydown",function(e){if(e.key==="Enter")start()});
 })();
 </script>
 </body>
