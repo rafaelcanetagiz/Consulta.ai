@@ -1,1 +1,1 @@
-{"name":"consulta-ai","private":true,"version":"0.2.0","engines":{"node":"20.x"},"scripts":{"test":"node test/smoke.js"}}
+{"name":"consulta-ai","private":true,"version":"0.2.0","engines":{"node":"22.x"},"scripts":{"test":"node test/smoke.js"}}
