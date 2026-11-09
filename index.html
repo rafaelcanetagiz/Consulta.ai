@@ -191,7 +191,7 @@ dialog#res::backdrop{background:rgba(2,6,30,.75)}
   function say(t,bad){cmsg.textContent=t;cmsg.className=bad?"neg":""}
   function busy(b){["cgo","cnew","go"].forEach(function(i){document.getElementById(i).disabled=b})}
   function api(path,opt){return fetch("/api/"+path,opt).then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j}})})}
-  function setDesafio(d){tok=d.token;cimg.src=d.imagem;ccode.value="";ccode.focus()}
+  function setDesafio(d){tok=d.token;cimg.onerror=function(){say("A imagem de segurança não carregou. Toque em Trocar imagem ou use a pesquisa oficial.",true);document.getElementById("blocked").hidden=false};cimg.src=d.imagem;ccode.value="";ccode.focus()}
   function novo(){busy(true);say("Buscando a imagem de segurança no SEI…");
     return api("captcha").then(function(x){if(!x.ok)throw x.j;setDesafio(x.j);say("")})
       .catch(function(e){say((e&&e.mensagem||"Não consegui falar com o SEI agora.")+" Você pode usar a pesquisa oficial.",true);document.getElementById("blocked").hidden=false})
@@ -199,7 +199,7 @@ dialog#res::backdrop{background:rgba(2,6,30,.75)}
   function start(){var v=inp.value.trim();
     if(v.replace(/\D/g,"").length<6){msg.textContent="Digite o número do processo para continuar.";n.classList.remove("hit");void n.offsetWidth;n.classList.add("hit");inp.focus();return}
     help.hidden=false;document.getElementById("blocked").hidden=true;novo()}
-  function enviar(){var c=ccode.value.trim();if(!c){say("Digite as letras da imagem.",true);ccode.focus();return}
+  function enviar(){if(!tok){novo();return}var c=ccode.value.trim();if(!c){say("Digite as letras da imagem.",true);ccode.focus();return}
     busy(true);say("Consultando o SEI…");
     api("consultar",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({token:tok,processo:inp.value.trim(),captcha:c})})
       .then(function(x){if(x.ok){say("");mostrar(x.j)}else{if(x.j.novoDesafio)setDesafio(x.j.novoDesafio);say(x.j.mensagem||"Não deu certo. Tente de novo.",true);if(x.j.erro==="resposta_inesperada"||x.j.erro==="formulario_inesperado")document.getElementById("blocked").hidden=false}})
