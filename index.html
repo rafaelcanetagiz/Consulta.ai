@@ -105,6 +105,24 @@ box-shadow:0 0 0 5px rgba(25,227,255,.55),0 0 55px rgba(25,227,255,.7),0 0 120px
 .help code{font:600 13.5px ui-monospace,Menlo,Consolas,monospace;background:rgba(3,8,40,.7);padding:2px 7px;border-radius:6px;word-break:break-all}
 .help button{font:inherit;font-size:12.5px;color:var(--cyan);background:transparent;border:1px solid rgba(25,227,255,.55);border-radius:99px;padding:2px 10px;cursor:pointer}
 .help a{color:var(--cyan)}
+.help .cap{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.help .cap img{background:#fff;border-radius:8px;max-width:100%;height:auto}
+.help .cap input{flex:1;min-width:120px;font:inherit;font-size:16px;color:#fff;background:rgba(3,8,40,.7);border:1.5px solid rgba(140,175,255,.4);border-radius:10px;padding:10px 12px}
+.help .solid{background:var(--cyan);color:#021030;border-color:var(--cyan);font-weight:700;padding:7px 16px}
+.help button:disabled{opacity:.5;cursor:wait}
+.neg{color:#ffb4b4}
+dialog#res{width:min(680px,calc(100% - 20px));max-height:88svh;padding:22px 20px;border:1px solid rgba(140,175,255,.4);border-radius:18px;background:#0a1448;color:var(--text);font:15px/1.55 Sora,system-ui,sans-serif}
+dialog#res::backdrop{background:rgba(2,6,30,.75)}
+#rclose{position:sticky;top:0;float:right;font:inherit;color:var(--cyan);background:#0a1448;border:1px solid rgba(25,227,255,.55);border-radius:99px;padding:4px 14px;cursor:pointer}
+#rbody h2{margin:0 0 6px;font-size:22px}#rbody h3{margin:20px 0 8px;font-size:16px;color:var(--cyan)}
+.rsub{margin:2px 0;color:var(--soft)}
+.rwhere{margin:14px 0;padding:14px;border-radius:14px;background:rgba(25,227,255,.12);border:1px solid rgba(25,227,255,.45);display:grid;gap:2px}
+.rwhere strong{font-size:20px}.rwhere small,.tl small{color:var(--soft)}
+.tl{list-style:none;margin:0;padding:0 0 0 14px;border-left:2px solid rgba(25,227,255,.4)}
+.tl li{display:grid;margin:0 0 12px;position:relative}.tl li::before{content:"";position:absolute;left:-20px;top:7px;width:10px;height:10px;border-radius:50%;background:var(--amber)}
+.doc2{margin:8px 0;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(140,175,255,.3)}
+.doc2 summary{cursor:pointer;font-weight:600}.doc2 a{color:var(--cyan)}
+#rbody pre{white-space:pre-wrap;font-size:12.5px;color:var(--soft)}
 @media(prefers-reduced-motion:reduce){.orb,.flies i,.notice.hit{animation:none}.go{transition:none}}
 </style>
 </head>
@@ -121,15 +139,17 @@ box-shadow:0 0 0 5px rgba(25,227,255,.55),0 0 55px rgba(25,227,255,.7),0 0 120px
       <div class="field">
         <input id="proc" type="text" inputmode="numeric" autocomplete="off" aria-label="Número do processo SEI" placeholder="Digite aqui o número do seu processo">
         <button class="go" id="go" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.43 15.1L2 22l5.04-1.58A9.9 9.9 0 1 0 12.04 2zm5.8 14.1c-.25.7-1.45 1.34-2 1.4-.52.05-1.17.07-1.9-.12a15 15 0 0 1-1.7-.63c-3-1.3-4.9-4.3-5.05-4.5-.14-.2-1.2-1.6-1.2-3s.75-2.1 1-2.4c.27-.3.58-.37.78-.37h.55c.18 0 .42-.07.65.5.25.6.85 2.1.93 2.25.07.15.12.33.02.52-.1.2-.15.33-.3.5l-.45.52c-.15.15-.3.3-.13.6.17.3.77 1.27 1.65 2.05 1.13 1 2.1 1.32 2.4 1.47.3.15.47.12.65-.07.17-.2.75-.87.95-1.17.2-.3.4-.25.67-.15.28.1 1.75.83 2.05.98.3.15.5.22.57.35.07.12.07.7-.18 1.4z"/></svg>
-          Iniciar conversa no WhatsApp
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2a8 8 0 1 0 4.9 14.3l5 5 1.4-1.4-5-5A8 8 0 0 0 10 2zm0 2a6 6 0 1 1 0 12 6 6 0 0 1 0-12z"/></svg>
+          Consultar meu processo
         </button>
       </div>
-      <p class="notice" id="notice" role="status"><b>Em breve</b><span>Consulta automática com explicação dos documentos. Por enquanto, abrimos a pesquisa oficial do SEI para você.</span></p>
-      <div class="help" id="help" hidden role="region" aria-label="Como continuar na pesquisa do SEI">
-        <p><b id="copied"></b> Seu número: <code id="num"></code> <button type="button" id="again">Copiar de novo</button></p>
-        <ol><li>Na janela do SEI, clique no campo <b>Nº SEI</b> e cole (Ctrl+V).</li><li>Resolva o captcha.</li><li>Clique em <b>Pesquisar</b>.</li></ol>
-        <p id="blocked" hidden>O navegador bloqueou a janela. <a href="https://app.sei.ac.gov.br/sei/modulos/pesquisa/md_pesq_processo_pesquisar.php?acao_externa=protocolo_pesquisar&amp;acao_origem_externa=protocolo_pesquisar&amp;id_orgao_acesso_externo=0" target="_blank" rel="noopener">Abrir a pesquisa do SEI</a>.</p>
+      <p class="notice" id="notice" role="status"><b>Em breve</b><span>Versão de teste: consulta ao SEI do IMAC com explicação dos documentos. O WhatsApp vem a seguir.</span></p>
+      <div class="help" id="help" hidden role="region" aria-label="Confirmação de segurança">
+        <p>Para consultar, digite as letras da imagem (é a verificação de segurança do SEI):</p>
+        <p class="cap"><img id="cimg" alt="Imagem de segurança do SEI" width="180" height="60"><input id="ccode" type="text" autocomplete="off" autocapitalize="off" maxlength="12" aria-label="Letras da imagem"></p>
+        <p><button type="button" id="cgo" class="solid">Ver meu processo</button> <button type="button" id="cnew">Trocar imagem</button></p>
+        <p id="cmsg" role="status"></p>
+        <p id="blocked" hidden>Prefere o site oficial? <button type="button" id="again">Abrir a pesquisa do SEI (copia o número)</button></p>
       </div>
     </div>
     <p class="fine">Projeto independente, não é um canal oficial do IMAC. A conversa ao lado é um exemplo ilustrativo.</p>
@@ -153,6 +173,7 @@ box-shadow:0 0 0 5px rgba(25,227,255,.55),0 0 55px rgba(25,227,255,.7),0 0 120px
     </div></div>
   </section>
 </div>
+<dialog id="res" aria-label="Resultado da consulta"><button type="button" id="rclose">Fechar</button><div id="rbody"></div></dialog>
 </main>
 <script>
 (function(){
@@ -164,30 +185,42 @@ box-shadow:0 0 0 5px rgba(25,227,255,.55),0 0 55px rgba(25,227,255,.7),0 0 120px
   }
   var inp=document.getElementById("proc"),n=document.getElementById("notice");
   inp.addEventListener("input",function(){inp.value=inp.value.replace(/[^0-9.\/\-]/g,"")});
-  var SEI="https://app.sei.ac.gov.br/sei/modulos/pesquisa/md_pesq_processo_pesquisar.php?acao_externa=protocolo_pesquisar&acao_origem_externa=protocolo_pesquisar&id_orgao_acesso_externo=0";
-  var help=document.getElementById("help"),msg=n.querySelector("span"),copied=document.getElementById("copied");
-  function copy(t){
-    if(navigator.clipboard&&window.isSecureContext){return navigator.clipboard.writeText(t).then(function(){return true},function(){return false})}
-    var ta=document.createElement("textarea");ta.value=t;ta.style.cssText="position:fixed;opacity:0";document.body.appendChild(ta);ta.select();
-    var ok=false;try{ok=document.execCommand("copy")}catch(e){}document.body.removeChild(ta);return Promise.resolve(ok);
-  }
-  function say(p){p.then(function(ok){copied.textContent=ok?"Número copiado.":"Não consegui copiar sozinho: use o botão Copiar."})}
-  function start(){
-    var v=inp.value.trim();
-    if(v.replace(/\D/g,"").length<6){
-      msg.textContent="Digite o número do processo para continuar.";
-      n.classList.remove("hit");void n.offsetWidth;n.classList.add("hit");inp.focus();return;
-    }
-    var c=copy(v);
-    var w=Math.min(1000,screen.availWidth-40),h=Math.min(780,screen.availHeight-60);
-    var pop=window.open(SEI,"seipesquisa","popup=yes,width="+w+",height="+h+",left=20,top=20");
-    document.getElementById("num").textContent=v;
-    document.getElementById("blocked").hidden=!!pop;
-    help.hidden=false;say(c);
-    if(pop){try{pop.focus()}catch(e){}}
-  }
+  var SEI="https://app.sei.ac.gov.br/sei/modulos/pesquisa/md_pesq_processo_pesquisar.php?acao_externa=protocolo_pesquisar&acao_origem_externa=protocolo_pesquisar&id_orgao_acesso_externo=0",tok=null;
+  var help=document.getElementById("help"),msg=n.querySelector("span"),cimg=document.getElementById("cimg"),ccode=document.getElementById("ccode"),cmsg=document.getElementById("cmsg"),dlg=document.getElementById("res"),rb=document.getElementById("rbody");
+  function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+  function say(t,bad){cmsg.textContent=t;cmsg.className=bad?"neg":""}
+  function busy(b){["cgo","cnew","go"].forEach(function(i){document.getElementById(i).disabled=b})}
+  function api(path,opt){return fetch("/api/"+path,opt).then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j}})})}
+  function setDesafio(d){tok=d.token;cimg.src=d.imagem;ccode.value="";ccode.focus()}
+  function novo(){busy(true);say("Buscando a imagem de segurança no SEI…");
+    return api("captcha").then(function(x){if(!x.ok)throw x.j;setDesafio(x.j);say("")})
+      .catch(function(e){say((e&&e.mensagem||"Não consegui falar com o SEI agora.")+" Você pode usar a pesquisa oficial.",true);document.getElementById("blocked").hidden=false})
+      .then(function(){busy(false)})}
+  function start(){var v=inp.value.trim();
+    if(v.replace(/\D/g,"").length<6){msg.textContent="Digite o número do processo para continuar.";n.classList.remove("hit");void n.offsetWidth;n.classList.add("hit");inp.focus();return}
+    help.hidden=false;document.getElementById("blocked").hidden=true;novo()}
+  function enviar(){var c=ccode.value.trim();if(!c){say("Digite as letras da imagem.",true);ccode.focus();return}
+    busy(true);say("Consultando o SEI…");
+    api("consultar",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({token:tok,processo:inp.value.trim(),captcha:c})})
+      .then(function(x){if(x.ok){say("");mostrar(x.j)}else{if(x.j.novoDesafio)setDesafio(x.j.novoDesafio);say(x.j.mensagem||"Não deu certo. Tente de novo.",true);if(x.j.erro==="resposta_inesperada"||x.j.erro==="formulario_inesperado")document.getElementById("blocked").hidden=false}})
+      .catch(function(){say("Sem conexão com o servidor. Tente de novo.",true)}).then(function(){busy(false)})}
+  function mostrar(d){rb.textContent="";rb.appendChild(el("h2",null,"Processo "+(d.numero||"")));
+    var cab=d.cabecalho||{};Object.keys(cab).filter(function(k){return /tipo|especifica|assunto|interessad/.test(k)}).slice(0,3).forEach(function(k){var p=el("p","rsub");p.appendChild(el("b",null,k.charAt(0).toUpperCase()+k.slice(1)+": "));p.appendChild(document.createTextNode(cab[k]));rb.appendChild(p)});
+    if(d.onde){var o=el("div","rwhere");o.appendChild(el("small",null,"Onde está agora"));o.appendChild(el("strong",null,d.onde.unidade||"—"));o.appendChild(el("span",null,(d.onde.data?"Último andamento em "+d.onde.data+". ":"")+(d.onde.simples||"")));rb.appendChild(o)}
+    if(d.andamentos&&d.andamentos.length){rb.appendChild(el("h3",null,"Andamento"));var ol=el("ol","tl");d.andamentos.slice(0,10).forEach(function(a){var li=el("li");li.appendChild(el("b",null,a.unidade));li.appendChild(el("span",null,a.simples||a.descricao));li.appendChild(el("small",null,a.data));ol.appendChild(li)});rb.appendChild(ol)}
+    if(d.documentos&&d.documentos.length){rb.appendChild(el("h3",null,"Documentos e o que significam"));d.documentos.slice(0,20).forEach(function(x){var de=el("details","doc2");de.appendChild(el("summary",null,(x.tipo||"Documento")+(x.data?" · "+x.data:"")));var e=x.explicacao;de.appendChild(el("p",null,e?e.significado:"Ainda não temos uma explicação pronta para este tipo de documento. Pergunte ao IMAC se precisar."));
+      if(e&&e.acao&&e.acao.length){de.appendChild(el("b",null,"O que fazer"));var ul=el("ul");e.acao.forEach(function(a){ul.appendChild(el("li",null,a))});de.appendChild(ul)}
+      if(x.link&&x.link.indexOf("https://app.sei.ac.gov.br/")===0){var a=el("a",null,"Abrir no SEI");a.href=x.link;a.target="_blank";a.rel="noopener";de.appendChild(a)}rb.appendChild(de)})}
+    if(d.textoBruto){rb.appendChild(el("h3",null,"Conteúdo encontrado"));rb.appendChild(el("pre",null,d.textoBruto))}
+    rb.appendChild(el("p","fine","Explicação automática e informativa, ainda em validação com o IMAC. Não substitui o órgão. Dados da pesquisa pública do SEI."));
+    if(dlg.showModal)dlg.showModal();else dlg.setAttribute("open","")}
+  function copy(t){if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(t).catch(function(){});var ta=document.createElement("textarea");ta.value=t;ta.style.cssText="position:fixed;opacity:0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy")}catch(e){}document.body.removeChild(ta)}
   document.getElementById("go").addEventListener("click",start);
-  document.getElementById("again").addEventListener("click",function(){say(copy(inp.value.trim()))});
+  document.getElementById("cgo").addEventListener("click",enviar);
+  document.getElementById("cnew").addEventListener("click",novo);
+  document.getElementById("again").addEventListener("click",function(){copy(inp.value.trim());window.open(SEI,"seipesquisa","popup=yes,width=1000,height=760")});
+  document.getElementById("rclose").addEventListener("click",function(){dlg.close()});
+  ccode.addEventListener("keydown",function(e){if(e.key==="Enter")enviar()});
   inp.addEventListener("keydown",function(e){if(e.key==="Enter")start()});
 })();
 </script>
